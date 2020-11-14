@@ -1,0 +1,3 @@
+include ':HoverCircleLib'
+include ':app'
+rootProject.name = "HoverCircleMenu"
