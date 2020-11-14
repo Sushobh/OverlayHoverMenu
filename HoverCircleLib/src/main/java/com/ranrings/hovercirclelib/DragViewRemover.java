@@ -119,7 +119,13 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
     }
 
     private void updateView(){
-        windowManager.updateViewLayout(imageView,params);
+        try {
+            windowManager.updateViewLayout(imageView,params);
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     @Override
