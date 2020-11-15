@@ -18,7 +18,7 @@ with the window manager and adds views to it and as a result this cannot be used
 ## How to use?
 
 Initiate the menu in your background service like this. Make sure that you have   
- **<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />** permission and also 
+ **SYSTEM_ALERT_WINDOW>** permission in manifest and also 
  the overlay permission during the runtime. Checkout the app included in the repo for a demo.
 
 ```kotlin
