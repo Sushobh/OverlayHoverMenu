@@ -16,10 +16,6 @@ class HoverService : Service() {
 
     lateinit var hoverCircleMenu: HoverCircleMenu
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null!!
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         if(!this::hoverCircleMenu.isInitialized){
@@ -54,7 +50,6 @@ class HoverService : Service() {
 
         }
         return super.onStartCommand(intent, flags, startId)
-
     }
 
     fun showToast(index : Int){
@@ -63,6 +58,11 @@ class HoverService : Service() {
         val text: TextView = toast.view.findViewById(android.R.id.message)
         text.setTextColor(Color.WHITE)
         toast.show()
+    }
+
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null!!
     }
 
 
