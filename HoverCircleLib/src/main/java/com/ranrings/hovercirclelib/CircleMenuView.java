@@ -57,15 +57,11 @@ public class CircleMenuView extends FrameLayout {
     private boolean mClosedState = true;
     private boolean mIsAnimating = false;
     private ImageView mMenuButton;
-    private int mIconMenu;
-    private int mIconClose;
     private int mDurationRing;
-    private int mLongClickDurationRing;
     private int mDurationOpen;
     private int mDurationClose;
     private int mDesiredSize;
     private int mRingRadius;
-    private Drawable mainButtonDrawable;
     private WindowManager mWindowManager;
 
     private float mDistance;
@@ -121,15 +117,13 @@ public class CircleMenuView extends FrameLayout {
      * @param context current context, will be used to access resources.
      * @param icons buttons icons resource ids array. Items must be @DrawableRes.
      */
-    private CircleMenuView(@NonNull Context context, int dimensionSize,@NonNull List<Drawable> icons, Drawable mainButtonDrawable) {
+    private CircleMenuView(@NonNull Context context, int dimensionSize,@NonNull List<Drawable> icons) {
         super(context);
         final float density = context.getResources().getDisplayMetrics().density;
         final float defaultDistance = DEFAULT_DISTANCE * density;
         mDurationRing = getResources().getInteger(android.R.integer.config_mediumAnimTime);
-        mLongClickDurationRing = getResources().getInteger(android.R.integer.config_longAnimTime);
         mDurationOpen = getResources().getInteger(android.R.integer.config_mediumAnimTime);
         mDurationClose = getResources().getInteger(android.R.integer.config_mediumAnimTime);
-        this.mainButtonDrawable = mainButtonDrawable;
         this.dimensionSize = dimensionSize;
         mDistance = defaultDistance;
         this.mWindowManager = getWindowManger();
@@ -393,26 +387,9 @@ public class CircleMenuView extends FrameLayout {
         return result;
     }
 
-    public void setIconMenu(@DrawableRes int iconId) {
-        mIconMenu = iconId;
-    }
 
-    @DrawableRes
-    public int getIconMenu() {
-        return mIconMenu;
-    }
-
-    public void setIconClose(@DrawableRes int iconId) {
-        mIconClose = iconId;
-    }
-
-    @DrawableRes
-    public int getIconClose() {
-        return mIconClose;
-    }
 
     /**
-
      * @param duration close animation duration in milliseconds.
      */
     public void setDurationClose(int duration) {
@@ -508,7 +485,6 @@ public class CircleMenuView extends FrameLayout {
             final float offset = open ? mDistance : 0f;
             final float scale = open ? 1f : 0f;
 
-            mMenuButton.setImageResource(open ? mIconClose : mIconMenu);
             mMenuButton.setAlpha(open ? DEFAULT_CLOSE_ICON_ALPHA : 1f);
 
             final int visibility = open ? View.VISIBLE : View.INVISIBLE;
@@ -547,8 +523,8 @@ public class CircleMenuView extends FrameLayout {
     }
 
 
-    public static CircleMenuView fromDrawableList(Context context,int dimensionSize ,List<Drawable> drwawbles, Drawable mainButtonDrawable){
-        return new CircleMenuView(context,dimensionSize,drwawbles,mainButtonDrawable);
+    public static CircleMenuView fromDrawableList(Context context,int dimensionSize ,List<Drawable> drwawbles){
+        return new CircleMenuView(context,dimensionSize,drwawbles);
     }
 
 

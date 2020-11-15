@@ -51,6 +51,7 @@ class HoverService : Service() {
                     })
                     .build(baseContext)
             hoverCircleMenu.start()
+
         }
         return super.onStartCommand(intent, flags, startId)
 

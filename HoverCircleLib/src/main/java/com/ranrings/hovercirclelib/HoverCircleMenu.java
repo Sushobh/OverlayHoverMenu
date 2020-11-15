@@ -53,7 +53,7 @@ public class HoverCircleMenu {
 
 
     private void initCircleView(){
-        circleMenuView = CircleMenuView.fromDrawableList(context,dimen,buttonIcons,mainButtonDrawable);
+        circleMenuView = CircleMenuView.fromDrawableList(context,dimen,buttonIcons);
         circleMenuView.init();
         circleMenuView.setEventListener(new CircleMenuView.EventListener(){
             @Override

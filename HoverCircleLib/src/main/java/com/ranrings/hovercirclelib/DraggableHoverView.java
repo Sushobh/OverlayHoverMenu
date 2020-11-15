@@ -23,7 +23,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 
 
 
- class DraggableHoverView extends androidx.appcompat.widget.AppCompatImageView implements View.OnTouchListener {
+class DraggableHoverView extends androidx.appcompat.widget.AppCompatImageView implements View.OnTouchListener {
 
 
     private final WindowManager mWindowManager;
@@ -129,15 +129,8 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
                 removerView.display();
                 isMenuOpen = false;
                 circularMenuDisplay.closeCircleView();
-                Log.i("Draggy","Param X " + params.x);
                 params.x = initialX + (int) (event.getRawX() - initialTouchX);
                 params.y = initialY + (int) (event.getRawY() - initialTouchY);
-                Log.i("Draggy InitialX",""+initialX);
-                Log.i("Draggy Raw X",""+event.getRawX());
-                Log.i("Draggy InitialTouchX",""+initialTouchX);
-                Log.i("Draggy Adding",""+(event.getRawX() - initialTouchX));
-                Log.i("Draggy Final",""+params.x);
-                Log.i("Draggy","-----------------------------------------------");
                 mWindowManager.updateViewLayout(this, params);
                 return true;
         }
