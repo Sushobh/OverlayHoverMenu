@@ -54,7 +54,7 @@ public class HoverCircleMenu {
 
     private void initCircleView(){
         circleMenuView = CircleMenuView.fromDrawableList(context,dimen,buttonIcons,mainButtonDrawable);
-        circleMenuView.init(mWindowManager);
+        circleMenuView.init();
         circleMenuView.setEventListener(new CircleMenuView.EventListener(){
             @Override
             public void onButtonClicked(@NonNull CircleMenuView view, int buttonIndex) {
@@ -76,6 +76,9 @@ public class HoverCircleMenu {
              @Override
              public void closeCircleView() {
                    circleMenuView.close(true);
+                   if(circleMenuView.getVisibility() == View.GONE){
+                       return;
+                   }
                    circleMenuView.setVisibility(View.GONE);
              }
 

@@ -8,13 +8,16 @@ import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +66,7 @@ public class CircleMenuView extends FrameLayout {
     private int mDesiredSize;
     private int mRingRadius;
     private Drawable mainButtonDrawable;
+    private WindowManager mWindowManager;
 
     private float mDistance;
 
@@ -128,6 +132,7 @@ public class CircleMenuView extends FrameLayout {
         this.mainButtonDrawable = mainButtonDrawable;
         this.dimensionSize = dimensionSize;
         mDistance = defaultDistance;
+        this.mWindowManager = getWindowManger();
         initLayout(context);
         initMenu(Color.WHITE);
         initButtons(context, icons);
@@ -482,6 +487,13 @@ public class CircleMenuView extends FrameLayout {
             return;
         }
 
+        if(open){
+            makeTouchable();
+        }
+        else {
+            makeUnTouchable();
+        }
+
         if (animate) {
             mMenuButton.performClick();
         } else {
@@ -567,21 +579,48 @@ public class CircleMenuView extends FrameLayout {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                getWindowType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                getWindowType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 PixelFormat.TRANSLUCENT);
         params.dimAmount = 0.7f;
         params.gravity = Gravity.TOP | Gravity.LEFT;
         return params;
     }
 
-    public void init(WindowManager windowManager){
-        windowManager.addView(this,getParams());
-        moveToCenterOfWindowManager(windowManager);
+
+    public void makeTouchable(){
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        mWindowManager.updateViewLayout(this,params);
+    }
+
+    public void makeUnTouchable(){
+        WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        mWindowManager.updateViewLayout(this,params);
+
+    }
+
+
+    public WindowManager getWindowManger(){
+        return (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
+    }
+
+
+
+    public void init(){
+        mWindowManager.addView(this,getParams());
+        moveToCenterOfWindowManager(getWindowManger());
+        setVisibility(VISIBLE);
     }
 
 
     public Point getMainMenuCoord(){
         WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams)getLayoutParams();
-        return new Point((int)(layoutParams.x+mMenuButton.getX()),(int)(layoutParams.y+mMenuButton.getY()));
+        float centerX = layoutParams.x+mMenuButton.getX();
+        float centerY = layoutParams.y+mMenuButton.getY();
+        return new Point((int)(centerX),(int)(centerY));
     }
 }

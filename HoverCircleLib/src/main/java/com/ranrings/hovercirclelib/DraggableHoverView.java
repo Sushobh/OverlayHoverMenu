@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,10 +39,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
     private boolean isMenuOpen = false;
     private boolean isFirstTime = true;
 
-    public void onButtonClickInCircleView() {
-        circularMenuDisplay.hideCircleView();
-        moveToVerticalEnd();
-    }
+
 
 
 
@@ -70,7 +68,6 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
         params = (WindowManager.LayoutParams) getLayoutParams();
         setOnTouchListener(this);
         setScaleType(ScaleType.FIT_CENTER);
-        setBackgroundColor(Color.TRANSPARENT);
     }
 
     public void animateToPoint(Point point,final boolean shouldOpenMenu) {
@@ -132,8 +129,15 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
                 removerView.display();
                 isMenuOpen = false;
                 circularMenuDisplay.closeCircleView();
+                Log.i("Draggy","Param X " + params.x);
                 params.x = initialX + (int) (event.getRawX() - initialTouchX);
                 params.y = initialY + (int) (event.getRawY() - initialTouchY);
+                Log.i("Draggy InitialX",""+initialX);
+                Log.i("Draggy Raw X",""+event.getRawX());
+                Log.i("Draggy InitialTouchX",""+initialTouchX);
+                Log.i("Draggy Adding",""+(event.getRawX() - initialTouchX));
+                Log.i("Draggy Final",""+params.x);
+                Log.i("Draggy","-----------------------------------------------");
                 mWindowManager.updateViewLayout(this, params);
                 return true;
         }
@@ -148,14 +152,13 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
         }
         else {
             animateToPoint(new Point(0,currentParams.y),false);
-
         }
     }
 
-    private void moveToVerticalEnd() {
-        WindowManager.LayoutParams currentParams = (WindowManager.LayoutParams) getLayoutParams();
+    private void moveToCornerAfterButtonClick() {
         ViewParent viewParent = UtilKt.getParentView(mWindowManager,this);
-        animateToPoint(new Point(viewParent.getHeight(),viewParent.getHeight()),false);
+        animateToPoint(new Point(viewParent.getWidth()-getWidth(),viewParent.getHeight()-getHeight()),false);
+        isMenuOpen = false;
     }
 
 
@@ -167,7 +170,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
                 getWindowType(), FLAG_NOT_FOCUSABLE | FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT);
         params.dimAmount = 0.7F;
-        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.gravity = Gravity.TOP | Gravity.START;
         params.width = dimen;
         params.height = dimen;
         return params;
@@ -192,6 +195,11 @@ import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
             animateToPoint(circleMenuView.getMainMenuCoord(),true);
         }
     }
+
+     public void onButtonClickInCircleView() {
+         circularMenuDisplay.hideCircleView();
+         moveToCornerAfterButtonClick();
+     }
 
 
 }
