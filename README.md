@@ -7,7 +7,7 @@ An overlay menu with circular layout.
 
 
 
-<img src="https://raw.github.com/Sushobh/OverlayHoverMenu/master/recording.gif" width="500" height="700"/>
+<img src="https://raw.github.com/Sushobh/OverlayHoverMenu/master/recording.gif" width="400" height="600"/>
 
 ## Notes
 
