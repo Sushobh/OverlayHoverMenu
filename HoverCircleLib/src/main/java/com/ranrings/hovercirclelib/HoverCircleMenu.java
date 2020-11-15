@@ -101,13 +101,15 @@ public class HoverCircleMenu {
 
 
         private final HoverCircleMenu hoverCircleMenu;
+        private Context context;
 
-        public Builder(){
+        public Builder(Context context){
+            this.context = context;
             this.hoverCircleMenu = new HoverCircleMenu();
         }
 
-        public Builder setDimen(int dimen){
-            this.hoverCircleMenu.dimen = dimen;
+        public Builder setDimenInDP(int dimen){
+            this.hoverCircleMenu.dimen = convertToPx(dimen,context);
             return this;
         }
 
@@ -132,9 +134,13 @@ public class HoverCircleMenu {
         }
 
 
+        public int convertToPx(int dp , Context context) {
+            float scale = context.getResources().getDisplayMetrics().density;
+            return (int)(dp * scale + 0.5f);
+        }
 
 
-        public HoverCircleMenu build(Context context){
+        public HoverCircleMenu build(){
             this.hoverCircleMenu.context = context;
             this.hoverCircleMenu.mWindowManager = (WindowManager) context.getSystemService(Service.WINDOW_SERVICE);
             return hoverCircleMenu;

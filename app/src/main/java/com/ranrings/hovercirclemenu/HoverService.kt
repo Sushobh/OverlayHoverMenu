@@ -35,10 +35,10 @@ class HoverService : Service() {
             val mainButton =  ContextCompat.getDrawable(baseContext,R.drawable.ic_earth)!!
             val removeButton = ContextCompat.getDrawable(baseContext,R.drawable.ic_delete)
 
-            hoverCircleMenu = HoverCircleMenu.Builder()
+            hoverCircleMenu = HoverCircleMenu.Builder(baseContext)
                     .setMainButton(mainButton)
                     .setButtonIcons(buttonIcons)
-                    .setDimen(convertToPx(60))
+                    .setDimenInDP(60)
                     .setRemoveButton(removeButton)
                     .setButtonClickListener(object : HoverCircleMenu.ButtonClickListener {
                         override fun buttonClicked(index: Int) {
@@ -49,7 +49,7 @@ class HoverService : Service() {
                         }
 
                     })
-                    .build(baseContext)
+                    .build()
             hoverCircleMenu.start()
 
         }
@@ -65,8 +65,5 @@ class HoverService : Service() {
         toast.show()
     }
 
-    fun convertToPx(dp: Int): Int {
-        val scale = resources.displayMetrics.density
-        return (dp * scale + 0.5f).toInt()
-    }
+
 }
