@@ -12,14 +12,35 @@ An overlay menu with circular layout.
 ## Notes
 
 This library is meant for use with background services which **have the draw overlay permission**. It interacts
-with the window manager and adds views to it and as a result this cannot be used as normal view.
+with the window manager and adds views to it and as a result this cannot be used as a normal view.
+
+
+
+## How to get it?
+
+In your project level gradle file, add this
+
+```java
+allprojects {
+   repositories {
+	  maven { url 'https://jitpack.io' }
+	}
+   }
+```
+And then add the dependency in your app level gradle file
+```java
+   dependencies {
+	    implementation 'com.github.Sushobh:OverlayHoverMenu:version1'
+    }
+```
+
 
 
 ## How to use?
 
 Initiate the menu in your background service like this. Make sure that you have   
- **SYSTEM_ALERT_WINDOW>** permission in manifest and also 
- the overlay permission during the runtime. Checkout the app included in the repo for a demo.
+ **SYSTEM_ALERT_WINDOW** permission in manifest and also 
+ the overlay permission during  runtime. Checkout the app included in the repo for a demo.
 
 ```kotlin
     lateinit var hoverCircleMenu: HoverCircleMenu
@@ -61,3 +82,5 @@ Initiate the menu in your background service like this. Make sure that you have
     }
 
 ```
+
+
