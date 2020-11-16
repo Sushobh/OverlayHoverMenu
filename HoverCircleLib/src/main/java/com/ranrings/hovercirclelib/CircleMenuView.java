@@ -229,56 +229,56 @@ public class CircleMenuView extends FrameLayout {
     }
 
     private Animator getButtonClickAnimation(final @NonNull View button) {
-        final int buttonNumber = mButtons.indexOf(button) + 1;
-        final float stepAngle = 360f / mButtons.size();
-        final float rOStartAngle = (270 - stepAngle + stepAngle * buttonNumber);
-        final float rStartAngle = rOStartAngle > 360 ? rOStartAngle % 360 : rOStartAngle;
 
-        final float x = (float) Math.cos(Math.toRadians(rStartAngle)) * mDistance;
-        final float y = (float) Math.sin(Math.toRadians(rStartAngle)) * mDistance;
 
-        final float pivotX = button.getPivotX();
-        final float pivotY = button.getPivotY();
-        button.setPivotX(pivotX - x);
-        button.setPivotY(pivotY - y);
+        PropertyValuesHolder alphaChange = PropertyValuesHolder.ofFloat("alpha",1f,0f);
+        PropertyValuesHolder scaleXChange = PropertyValuesHolder.ofFloat("scaleX", 2f, 0f);
+        PropertyValuesHolder scaleYChange = PropertyValuesHolder.ofFloat("scaleY",2f,0f);
+        ValueAnimator translator = ValueAnimator.
+                ofPropertyValuesHolder(alphaChange, scaleXChange,scaleYChange);
 
-        final ObjectAnimator rotateButton = ObjectAnimator.ofFloat(button, "rotation", 0f, 360f);
-        rotateButton.addListener(new AnimatorListenerAdapter() {
+        translator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                button.setPivotX(pivotX);
-                button.setPivotY(pivotY);
+                    button.setScaleY(1f);
+                    button.setScaleX(1f);
+                    button.setAlpha(1f);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                for (View view: mButtons) {
+                    if(view != button){
+                        view.setVisibility(View.INVISIBLE);
+                    }
+                }
             }
         });
+        translator.setDuration(mDurationClose);
+        translator.addUpdateListener(animation -> {
+            float scaleX1 = (float)animation.getAnimatedValue("scaleX");
+            float scaleY1 = (float)animation.getAnimatedValue("scaleY");
+            float alpha1 = (float)animation.getAnimatedValue("alpha");
+            button.setScaleX(scaleX1);
+            button.setScaleY(scaleY1);
+            button.setAlpha(alpha1);
+        });
 
-        final AnimatorSet lastSet = new AnimatorSet();
-        lastSet.playTogether(
-                getCloseMenuAnimation());
 
         final AnimatorSet firstSet = new AnimatorSet();
-        firstSet.playTogether(rotateButton);
+        firstSet.playTogether(translator);
 
         final AnimatorSet result = new AnimatorSet();
-        result.play(firstSet).before(lastSet);
+        result.play(firstSet);
         result.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mIsAnimating = true;
-
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    bringChildToFront(button);
-                } else {
-
-                }
-
+                bringChildToFront(button);
             }
             @Override
             public void onAnimationEnd(Animator animation) {
                 mIsAnimating = false;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                }
             }
         });
 
