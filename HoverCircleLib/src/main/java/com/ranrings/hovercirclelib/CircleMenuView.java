@@ -567,7 +567,7 @@ public class CircleMenuView extends FrameLayout {
     public void makeTouchable(){
         WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         mWindowManager.updateViewLayout(this,params);
     }
 
